@@ -38,8 +38,12 @@ def get_message_to_send(message):
 
     commands = ["cities", "weather", "help"]
 
-    command = message.split()[0]
-    arguments = message.split()[1:]
+    message_to_list = message.split()
+
+    message_len = len(message_to_list)
+
+    command = message_to_list[0]
+    arguments = message_to_list[1:]
     arguments_string = utils.list_to_string(arguments, " ")
 
 
@@ -47,12 +51,16 @@ def get_message_to_send(message):
     if command in commands:
         if command == commands[0]: # cities list
             message_to_send = f"**Cidades disponíveis:**\n{utils.list_to_string(data_grabbing.get_all_cities(), '; ')}"
+
         elif command == commands[1]: # weather for a city
-            city_code = data_grabbing.get_city_code(arguments_string)
-            if city_code == None:
-                message_to_send = f"{message} não existe na lista de cidades. ${commands[0]} para ver a lista."
+            if message_len > 1:
+                city_code = data_grabbing.get_city_code(arguments_string)
+                if city_code == None:
+                    message_to_send = f"{arguments_string} não existe na lista de cidades. ${commands[0]} para ver a lista."
+                else:
+                    message_to_send = f"{data_grabbing.get_weather(city_code, 0)}"
             else:
-                message_to_send = f"{data_grabbing.get_weather(city_code, 0)}"
+                message_to_send = "Introduz uma cidade."
 
         elif command == commands[2]: # help
             n1 = "\n"
