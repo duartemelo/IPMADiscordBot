@@ -15,6 +15,7 @@ def get_city(city_code):
     return city
 
 
+# Returns all cities available in the API
 def get_all_cities():
     cities = []
 
@@ -40,6 +41,7 @@ def get_city_code(city):
     return city_code
 
 
+# Returns the weather for a city with a specific city_code, day can vary from 0 to 4 !
 def get_weather(city_code, day): # Braga 1030300 # Day = 0 if today, 1 tomorrow, etc.
     response = requests.get(f"http://api.ipma.pt/open-data/forecast/meteorology/cities/daily/{city_code}.json")
     json_data = json.loads(response.text)
