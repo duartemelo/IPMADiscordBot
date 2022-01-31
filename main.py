@@ -1,14 +1,12 @@
 import discord
 import os
 from dotenv import load_dotenv
-
-import data_grabbing
-import utils
+import message_handling
 
 
 client = discord.Client()
 
-backslash_n = "\n"
+prefix = "$"
 
 @client.event
 async def on_ready():
@@ -22,55 +20,15 @@ async def on_message(message):
         return
 
     else:
-        if message.content.startswith("$"):
+        if message.content.startswith(prefix):
             if len(message.content) > 1:
                 message_content = message.content[1:]
-
-                message_to_send = get_message_to_send(message_content)
+                message_to_send = message_handling.get_message_to_send(message_content)
 
             else:
-                message_to_send = "Escreve alguma coisa." # tag ao user
+                message_to_send = "Escreve alguma coisa."  # tag ao user
 
             await message.channel.send(f"{message.author.mention}\n{message_to_send}")
-
-
-commands = {
-    "cities": lambda args: f"**Cidades disponíveis:**\n{utils.list_to_string(data_grabbing.get_all_cities(), '; ')}",
-    "weather": lambda args: get_message_to_send_weather_for_city(args) if args != "" else "**Insere uma cidade**",
-    "help": lambda args: f"**Comandos disponíveis:**\n{utils.list_to_string(commands, f';{backslash_n}')}"
-}
-
-
-# Returns the message to send to the user, depending on the received message from the user
-def get_message_to_send(message):
-
-    message_to_list = message.split()
-
-    command = message_to_list[0]
-    arguments = message_to_list[1:]
-    arguments_string = utils.list_to_string(arguments, " ")
-
-    if command in commands:
-        func = commands[command]
-        message_to_send = func(arguments_string)
-
-    else: # command does not exist
-        message_to_send = "Esse comando não existe."
-
-    return message_to_send
-
-
-# Returns the message to send to the user when he does $weather <city>
-def get_message_to_send_weather_for_city(given_city):
-
-    city_code = data_grabbing.get_city_code(given_city)
-    if city_code is None:
-        keys_list = list(commands)
-        message_to_send = f"{given_city} não existe na lista de cidades. ${keys_list[0]} para ver a lista." #fix, dynamic help command
-    else:
-        message_to_send = f"{data_grabbing.get_weather(city_code, 0)}"
-
-    return message_to_send
 
 
 load_dotenv()
