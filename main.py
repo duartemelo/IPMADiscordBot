@@ -28,7 +28,10 @@ async def on_message(message):
             else:
                 message_to_send = "Escreve alguma coisa."  # tag ao user
 
-            await message.channel.send(f"{message.author.mention}\n{message_to_send}")
+            if type(message_to_send) == discord.embeds.Embed:  # if its embed
+                await message.channel.send(embed=message_to_send)
+            else: # if its not embed
+                await message.channel.send(f"{message.author.mention}\n{message_to_send}")
 
 
 load_dotenv()
