@@ -7,7 +7,7 @@ backslash_n = "\n"  # created because of the impossibility of using \n inside f 
 commands = {
     "cities": lambda args: message_prettify.cities_list_prettify(data_grabbing.get_all_cities()),
     "weather": lambda args: get_message_to_send_weather_for_city(args) if args != "" else "**Insere uma cidade**",
-    "help": lambda args: f"**Comandos disponíveis:**\n{utils.list_to_string(commands, f';{backslash_n}')}"
+    "help": lambda args: message_prettify.help_prettify(commands),
 }
 
 

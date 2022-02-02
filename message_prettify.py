@@ -64,6 +64,20 @@ def get_weather_prettify(weather_dict, city_code):
     return embed_response
 
 
+def help_prettify(commands):
+
+    embed_response = discord.Embed(title="Comandos disponíveis",
+                                   color=0x6FD9F8)
+
+    commands_list = list(commands.keys())
+
+    embed_response.add_field(name="Comandos",
+                             value=utils.list_to_string(commands_list, "\n"),
+                             inline=False)
+
+    return embed_response
+
+
 # Function that returns the field with its suffix, example:
 #                                                  20.0 to 20.0º
 #                                                  0.0 to 0.0% (precipitaProb)
