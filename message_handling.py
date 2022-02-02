@@ -2,7 +2,7 @@ import utils
 import data_grabbing
 import message_prettify
 
-backslash_n = "\n" # created because of the impossibility of using \n inside f strings
+backslash_n = "\n"  # created because of the impossibility of using \n inside f strings
 
 commands = {
     "cities": lambda args: message_prettify.cities_list_prettify(data_grabbing.get_all_cities()),
@@ -24,7 +24,7 @@ def get_message_to_send(message):
         func = commands[command]
         message_to_send = func(arguments_string)
 
-    else: # command does not exist
+    else:  # command does not exist
         message_to_send = "Esse comando não existe."
 
     return message_to_send

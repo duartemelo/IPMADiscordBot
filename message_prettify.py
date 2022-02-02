@@ -4,6 +4,9 @@ import data_grabbing
 import utils
 
 
+# fields translations
+# the key is the raw field as it comes from the API
+# the value is the more beautiful way to show the field name
 ui_fields_translations = {
     "precipitaProb": "Probabilidade de precipitação",
     "tMin": "Temperatura mínima",
@@ -21,6 +24,8 @@ fields_suffixes = {
 }
 
 
+# Function that returns an embed discord response with the list of all the cities available at IPMA API
+# (prettifies the data to be shown)
 def cities_list_prettify(cities_list):
     cities_list_first_half = cities_list[:len(cities_list)//2]
     cities_list_second_half = cities_list[len(cities_list)//2:]
@@ -43,6 +48,7 @@ def cities_list_prettify(cities_list):
     return embed_response
 
 
+# Function that returns an embed discord response with the weather of a city (prettifies the data to be shown)
 def get_weather_prettify(weather_dict, city_code):
 
     embed_response = discord.Embed(title=data_grabbing.get_city(city_code),
@@ -58,6 +64,10 @@ def get_weather_prettify(weather_dict, city_code):
     return embed_response
 
 
+# Function that returns the field with its suffix, example:
+#                                                  20.0 to 20.0º
+#                                                  0.0 to 0.0% (precipitaProb)
+# fields_suffixes dictionary has the keys with their suffixes
 def handle_field_suffix(key, field_value):
 
     field_value_str = str(field_value)
