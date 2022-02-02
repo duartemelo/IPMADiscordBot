@@ -89,4 +89,3 @@ def get_weather_type(weather_id):
 
     return weather_type
 
-

@@ -89,4 +89,3 @@ def handle_field_suffix(key, field_value):
         field_value_str = field_value + fields_suffixes[key]
 
     return field_value_str
-
