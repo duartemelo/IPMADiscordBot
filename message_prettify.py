@@ -14,7 +14,11 @@ ui_fields_translations = {
     "forecastDate": "Data da previsão"
 }
 
-fields_with_degree = ["tMin", "tMax"]
+fields_suffixes = {
+    "tMin": "º",
+    "tMax": "º",
+    "precipitaProb": "%",
+}
 
 
 def cities_list_prettify(cities_list):
@@ -24,9 +28,17 @@ def cities_list_prettify(cities_list):
     cities_list_first_half_string = utils.list_to_string(cities_list_first_half, "\n")
     cities_list_second_half_string = utils.list_to_string(cities_list_second_half, "\n")
 
-    embed_response = discord.Embed(title="Cidades", description="Lista de cidades disponíveis", color=0x6FD9F8)
-    embed_response.add_field(name="Cidades", value=cities_list_first_half_string, inline=True)
-    embed_response.add_field(name="+", value=cities_list_second_half_string, inline=True)
+    embed_response = discord.Embed(title="Cidades",
+                                   description="Lista de cidades disponíveis",
+                                   color=0x6FD9F8)
+
+    embed_response.add_field(name="Cidades",
+                             value=cities_list_first_half_string,
+                             inline=True)
+
+    embed_response.add_field(name="+",
+                             value=cities_list_second_half_string,
+                             inline=True)
 
     return embed_response
 
@@ -40,9 +52,17 @@ def get_weather_prettify(weather_dict, city_code):
     for key in weather_dict:
         field_translated = ui_fields_translations[key]
         embed_response.add_field(name=field_translated,
-                                 value=(str(weather_dict[key]) + "º" if key in fields_with_degree
-                                        else str(weather_dict[key])),
+                                 value=handle_field_suffix(key, weather_dict[key]),
                                  inline=False)
 
     return embed_response
+
+
+def handle_field_suffix(key, field_value):
+
+    field_value_str = str(field_value)
+    if key in fields_suffixes:
+        field_value_str = field_value + fields_suffixes[key]
+
+    return field_value_str
 
