@@ -31,13 +31,15 @@ def get_message_to_send(message):
 
 
 # Returns the message to send to the user when he does $weather <city>
+# TODO: pass the day as arg and receive the day from the user
 def get_message_to_send_weather_for_city(given_city):
 
     city_code = data_grabbing.get_city_code(given_city)
     if city_code is None:
         keys_list = list(commands)
-        message_to_send = f"{given_city} não existe na lista de cidades. ${keys_list[0]} para ver a lista." #fix, dynamic help command
+        message_to_send = f"{given_city} não existe na lista de cidades. ${keys_list[0]} para ver a lista."
     else:
-        message_to_send = f"{data_grabbing.get_weather(city_code, 0)}"
+        weather_dict = data_grabbing.get_weather(city_code, 0)
+        message_to_send = message_prettify.get_weather_prettify(weather_dict, city_code)
 
     return message_to_send
