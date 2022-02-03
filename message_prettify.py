@@ -64,6 +64,7 @@ def get_weather_prettify(weather_dict, city_code):
     return embed_response
 
 
+# Function that returns an embed discord response with the help command (shows all the available commands)
 def help_prettify(commands):
 
     embed_response = discord.Embed(title="Comandos disponíveis",
@@ -78,6 +79,7 @@ def help_prettify(commands):
     return embed_response
 
 
+# Function that returns an embed discord response with the error response (sends the error message)
 def error_prettify(message):
     embed_response = discord.Embed(title="Erro",
                                    color=0xFF0400)

@@ -46,7 +46,7 @@ def get_city_code(city):
     return city_code
 
 
-# TODO: return a dictionary with weather info, day exception if less than 0 and bigger than 4
+# TODO: day error if less than 0 and bigger than 4
 # Returns the weather for a city with a specific city_code, day can vary from 0 to 4 !
 def get_weather(city_code, day):  # Braga 1030300 # Day = 0 if today, 1 tomorrow, etc.
 
