@@ -10,6 +10,11 @@
 - Python with discord.py, requests.py, json.py
 - **[IPMA API](https://api.ipma.pt/)**
 
+## Setup
+**In order to help to develop this bot and code and test by yourself, you must:**  
+- Install all dependencies (python-dotenv, discord);
+- Create a .env file with the token for your bot (TOKEN=your token)
+
 ### Useful links
 - [Trello]()
 - [My LinkedIn](https://www.linkedin.com/in/duarteribeiromelo/)
