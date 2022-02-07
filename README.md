@@ -16,7 +16,7 @@
 - Create a .env file with the token for your bot (TOKEN=your token)
 
 ### Useful links
-- [Trello]()
+- [Trello](https://trello.com/b/caa0Op4o/ipma-discord-bot)
 - [My LinkedIn](https://www.linkedin.com/in/duarteribeiromelo/)
 
 
