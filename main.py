@@ -1,8 +1,7 @@
 import discord
 import os
 from dotenv import load_dotenv
-import message_handling
-
+from message import message_handling
 
 client = discord.Client()
 

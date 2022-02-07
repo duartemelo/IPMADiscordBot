@@ -1,13 +1,13 @@
 import utils
-import data_grabbing
-import message_prettify
+from data import data_grabbing
+from message import message_prettify
 
 backslash_n = "\n"  # created because of the impossibility of using \n inside f strings
 
 # Commands templates, basically how a command should be used
 commands_templates = {
     "cities": "$cities",
-    "weather": "$weather <city> <day>",
+    "weather": "$weather <city> <day (from 0 to 4)>",
     "help": "$help"
 }
 
@@ -39,19 +39,27 @@ def get_message_to_send(message):
 
 
 # Returns the message to send to the user when he does $weather <city>
-# TODO: pass the day as arg and receive the day from the user
-def get_message_to_send_weather_for_city(given_city):
-    if given_city == "":
+def get_message_to_send_weather_for_city(args):
+
+    args_separated = args.split(" ")
+
+    if len(args_separated) < 2:
         return message_prettify.error_prettify(commands_templates["weather"])
 
-    city_code = data_grabbing.get_city_code(given_city)
-    if city_code is None:
-        keys_list = list(commands_functionalities)
-        message_to_send = message_prettify.error_prettify(
-            f"{given_city} não existe na lista de cidades. ${keys_list[0]} para ver a lista."
-        )
     else:
-        weather_dict = data_grabbing.get_weather(city_code, 0) # TODO: receive day from the user
-        message_to_send = message_prettify.get_weather_prettify(weather_dict, city_code)
+        given_city = args_separated[0]
+        day = int(args_separated[1])
+        city_code = data_grabbing.get_city_code(given_city)
+        if city_code is None:
+            keys_list = list(commands_functionalities)
+            message_to_send = message_prettify.error_prettify(
+                f"{given_city} não existe na lista de cidades. ${keys_list[0]} para ver a lista."
+            )
+        else:
+            weather_response = data_grabbing.get_weather(city_code, day)
+            if type(weather_response) is dict:
+                message_to_send = message_prettify.get_weather_prettify(weather_response, city_code)
+            else:
+                message_to_send = message_prettify.error_prettify(weather_response)
 
-    return message_to_send
+        return message_to_send

@@ -47,7 +47,7 @@ def get_city_code(city):
 
 
 # TODO: day error if less than 0 and bigger than 4
-# Returns the weather for a city with a specific city_code, day can vary from 0 to 4 !
+
 def get_weather(city_code, day):  # Braga 1030300 # Day = 0 if today, 1 tomorrow, etc.
 
     weather = {
@@ -63,8 +63,13 @@ def get_weather(city_code, day):  # Braga 1030300 # Day = 0 if today, 1 tomorrow
     response = requests.get(f"http://api.ipma.pt/open-data/forecast/meteorology/cities/daily/{city_code}.json")
     json_data = json.loads(response.text)
 
-    for key in weather:
-        weather[key] = json_data['data'][day][key]
+    try:
+        for key in weather:
+            weather[key] = json_data['data'][day][key]
+    except IndexError:
+        return f"Dia inserido ({day}) inválido. Insira um dia entre 0 (hoje) e 4."
+    except Exception as e:
+        return e
 
     weather['idWeatherType'] = get_weather_type(weather['idWeatherType'])
 

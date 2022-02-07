@@ -1,6 +1,6 @@
 import discord
 
-import data_grabbing
+from data import data_grabbing
 import utils
 
 
