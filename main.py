@@ -21,10 +21,11 @@ async def on_message(message):
         return
 
     else:
+        server_id = message.guild.id  # server id
         if message.content.startswith(prefix):  # If the message starts with the bot prefix (defined before)
             if len(message.content) > 1:
                 message_content = message.content[1:]
-                message_to_send = message_handling.get_message_to_send(message_content)
+                message_to_send = message_handling.get_message_to_send(message_content)  # pass server_id too?
 
             else:  # If its only the prefix
                 message_to_send = message_prettify.error_prettify(f"Escreve alguma coisa.")
