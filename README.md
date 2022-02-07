@@ -21,6 +21,7 @@
 - Create a .env file with the token for your bot (TOKEN=your token)
 - Create a database.ini file with PostgresSQL configuration data like shown below  
   ![Database.ini](readmeimages/databaseinistuff.png)
+- Have the database created with the necessary tables
 
 ### Useful links
 
