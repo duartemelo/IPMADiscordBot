@@ -94,7 +94,7 @@ def error_prettify(message):
 # Function that returns an embed discord response with the default message response (sends the message)
 def default_message_prettify(message):
     embed_response = discord.Embed(title="Mensagem",
-                                   color=0xFF0400)
+                                   color=0x6FD9F8)
 
     embed_response.add_field(name="Mensagem",
                              value=message,
