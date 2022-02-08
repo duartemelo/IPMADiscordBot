@@ -1,6 +1,6 @@
 import requests
 import json
-
+import exceptions
 
 # Returns the name of a city with a specific city_code (passed by argument)
 def get_city(city_code):
@@ -13,7 +13,7 @@ def get_city(city_code):
             city = city_data['local']
 
     if city is None:
-        raise Exception
+        raise exceptions.CityDoesNotExist
 
     return city
 
@@ -22,11 +22,16 @@ def get_city(city_code):
 def get_all_cities():
     cities = []
 
-    response = requests.get("https://api.ipma.pt/open-data/distrits-islands.json")
-    json_data = json.loads(response.text)
+    try:
+        response = requests.get("https://api.ipma.pt/open-data/distrits-islands.json")
+        json_data = json.loads(response.text)
 
-    for city_data in json_data['data']:
-        cities.append(city_data['local'])
+        for city_data in json_data['data']:
+            cities.append(city_data['local'])
+    except Exception as e:
+        print(e)
+
+
 
     return cities
 
@@ -35,15 +40,23 @@ def get_all_cities():
 def get_city_code(city):
     city = city.lower()
     city_code = None
-    response = requests.get("https://api.ipma.pt/open-data/distrits-islands.json")
-    json_data = json.loads(response.text)
 
-    for city_data in json_data['data']:
-        if city_data['local'].lower() == city:
-            city_code = city_data['globalIdLocal']
-            break
+    try:
+        response = requests.get("https://api.ipma.pt/open-data/distrits-islands.json")
+        json_data = json.loads(response.text)
 
-    return city_code
+        for city_data in json_data['data']:
+            if city_data['local'].lower() == city:
+                city_code = city_data['globalIdLocal']
+                break
+
+        if city_code is None:
+            raise exceptions.CityDoesNotExist
+
+    except Exception as e:
+        raise e
+    else:
+        return city_code
 
 
 # TODO: day error if less than 0 and bigger than 4
@@ -66,12 +79,12 @@ def get_weather(city_code, day):  # Braga 1030300 # Day = 0 if today, 1 tomorrow
     try:
         for key in weather:
             weather[key] = json_data['data'][day][key]
+        weather['idWeatherType'] = get_weather_type(weather['idWeatherType'])
     except IndexError:
         return f"Dia inserido ({day}) inválido. Insira um dia entre 0 (hoje) e 4."
     except Exception as e:
         return e
 
-    weather['idWeatherType'] = get_weather_type(weather['idWeatherType'])
 
     return weather
 
@@ -81,16 +94,20 @@ def get_weather_type(weather_id):
 
     weather_type = None
 
-    response = requests.get("https://api.ipma.pt/open-data/weather-type-classe.json")
-    json_data = json.loads(response.text)
+    try:
+        response = requests.get("https://api.ipma.pt/open-data/weather-type-classe.json")
+        json_data = json.loads(response.text)
 
-    for weather_type_data in json_data['data']:
-        if weather_type_data['idWeatherType'] == weather_id:
-            weather_type = weather_type_data['descIdWeatherTypePT']
-            break
+        for weather_type_data in json_data['data']:
+            if weather_type_data['idWeatherType'] == weather_id:
+                weather_type = weather_type_data['descIdWeatherTypePT']
+                break
 
-    if weather_type is None:
-        raise Exception
+        if weather_type is None:
+            raise Exception
+
+    except Exception as e:
+        print(e)
+
 
     return weather_type
-

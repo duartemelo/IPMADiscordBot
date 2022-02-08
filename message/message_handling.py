@@ -2,6 +2,7 @@ import utils
 from data import data_grabbing
 from message import message_prettify
 from database_stuff.insert_server_city import insert_server_city
+import exceptions
 
 backslash_n = "\n"  # created because of the impossibility of using \n inside f strings
 
@@ -75,18 +76,27 @@ def get_message_to_send_weather_for_city(args):
 def set_city_handler(*args):
     city_name, server_id = args
 
-    city_code = data_grabbing.get_city_code(city_name)
-
-    if city_code is None:  # TODO: exceptions stuff
+    try:
+        city_code = data_grabbing.get_city_code(city_name)
+    except exceptions.CityDoesNotExist:
         keys_list = list(commands_functionalities)
         message_to_send = message_prettify.error_prettify(
-            f"{city_name} não existe na lista de cidades. ${keys_list[0]} para ver a lista."
-        )
+            f"{city_name} não existe na lista de cidades. ${keys_list[0]} para ver a lista.")
+    except Exception as e:
+        message_to_send = message_prettify.error_prettify(e)
     else:
-        insert_server_city_response = insert_server_city(server_id, city_code)
-        if insert_server_city_response is True:
-            message_to_send = message_prettify.default_message_prettify("Cidade inserida com sucesso.")
-        else:  # some error TODO: do this with exceptions!
-            message_to_send = message_prettify.error_prettify(insert_server_city_response)
+        try:
+            insert_server_city_response = insert_server_city(server_id, city_code)
+            if insert_server_city_response is True:
+                message_to_send = message_prettify.default_message_prettify("Cidade inserida com sucesso.")
+            else:  # some error TODO: do this with exceptions!
+                message_to_send = message_prettify.error_prettify(insert_server_city_response)
+
+        except Exception as e:
+            keys_list = list(commands_functionalities)
+            message_to_send = message_prettify.error_prettify(e)
+
+
+
 
     return message_to_send

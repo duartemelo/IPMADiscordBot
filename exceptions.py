@@ -1,0 +1,2 @@
+class CityDoesNotExist(Exception):
+    pass

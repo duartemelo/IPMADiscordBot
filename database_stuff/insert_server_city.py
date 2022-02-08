@@ -17,7 +17,7 @@ def insert_server_city(server_id, city_code):
         cur.close()
         return True
     except (Exception, psycopg2.DatabaseError) as error:
-        return error
+        raise error
     finally:
         if conn is not None:
             conn.close()
