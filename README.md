@@ -17,7 +17,7 @@
 
 **In order to help to develop this bot and code and test by yourself, you must:**
 
-- Install all dependencies (python-dotenv, discord);
+- Install all dependencies (python-dotenv, discord, psycopg2);
 - Create a .env file with the token for your bot (TOKEN=your token)
 - Create a database.ini file with PostgresSQL configuration data like shown below  
 ![Database.ini](readmeimages/databaseinistuffv2.png)

@@ -1,7 +1,7 @@
 import utils
 from data import data_grabbing
 from message import message_prettify
-from insert_server_city import insert_server_city
+from database_stuff.insert_server_city import insert_server_city
 
 backslash_n = "\n"  # created because of the impossibility of using \n inside f strings
 

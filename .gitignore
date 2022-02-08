@@ -1,2 +1,2 @@
 .env
-database.ini
+database_stuff/database.ini
