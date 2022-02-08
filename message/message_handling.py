@@ -32,7 +32,10 @@ def get_message_to_send(message, server_id):
 
     if command in commands_functionalities:
         func = commands_functionalities[command]
-        message_to_send = func(arguments_string, server_id)
+        try:
+            message_to_send = func(arguments_string, server_id)
+        except Exception as e:
+            message_to_send = message_prettify.error_prettify(e)
 
     else:  # command does not exist
         message_to_send = message_prettify.error_prettify("Esse comando não existe")
@@ -51,17 +54,18 @@ def get_message_to_send_weather_for_city(args):
         given_city = args_separated[0]
         day = int(args_separated[1])
         city_code = data_grabbing.get_city_code(given_city)
-        if city_code is None:  # TODO: exceptions stuff
-            keys_list = list(commands_functionalities)
-            message_to_send = message_prettify.error_prettify(
-                f"{given_city} não existe na lista de cidades. ${keys_list[0]} para ver a lista."
-            )
-        else:
+
+        try:
             weather_response = data_grabbing.get_weather(city_code, day)
             if type(weather_response) is dict:
                 message_to_send = message_prettify.get_weather_prettify(weather_response, city_code)
             else:
                 message_to_send = message_prettify.error_prettify(weather_response)
+        except ValueError as e:
+            keys_list = list(commands_functionalities)
+            message_to_send = message_prettify.error_prettify(f"{given_city} não existe na lista de cidades. ${keys_list[0]} para ver a lista.")
+        except Exception as e:
+            message_to_send = message_prettify.error_prettify(e)
 
         return message_to_send
 
