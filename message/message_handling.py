@@ -93,7 +93,6 @@ def set_city_handler(*args):
                 message_to_send = message_prettify.error_prettify(insert_server_city_response)
 
         except Exception as e:
-            keys_list = list(commands_functionalities)
             message_to_send = message_prettify.error_prettify(e)
 
 

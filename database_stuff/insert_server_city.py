@@ -1,5 +1,7 @@
 import psycopg2
 from database_stuff.db_config import config
+import exceptions
+from data import data_grabbing
 
 
 def insert_server_city(server_id, city_code):
@@ -16,8 +18,10 @@ def insert_server_city(server_id, city_code):
         conn.commit()
         cur.close()
         return True
-    except (Exception, psycopg2.DatabaseError) as error:
-        raise error
+    except psycopg2.errors.UniqueViolation:
+        raise exceptions.DuplicateValue(f"A cidade {data_grabbing.get_city(city_code)} já está na base de dados.")
+    except Exception as e:
+        raise e
     finally:
         if conn is not None:
             conn.close()

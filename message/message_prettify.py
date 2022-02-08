@@ -12,7 +12,7 @@ ui_fields_translations = {
     "tMin": "Temperatura mínima",
     "tMax": "Temperatura máxima",
     "predWindDir": "Direção do vento",
-    "idWeatherType": "ID Estado do tempo",  # TODO: handle this!
+    "idWeatherType": "Estado do tempo",
     "classWindSpeed": "Classe de velocidade do vento",
     "forecastDate": "Data da previsão"
 }
