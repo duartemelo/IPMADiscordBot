@@ -10,7 +10,8 @@
 
 ## Stack
 
-- Python with discord.py, requests.py, json.py
+- Python with discord.py, requests.py, json.py, psycopg2
+- PostgresSQL
 - **[IPMA API](https://api.ipma.pt/)**
 
 ## Setup
