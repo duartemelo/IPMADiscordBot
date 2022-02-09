@@ -2,6 +2,7 @@ import utils
 from data import data_grabbing
 from message import message_prettify
 from database_stuff.insert_server_city import insert_server_city
+from database_stuff.delete_server_city import delete_server_city
 
 backslash_n = "\n"  # created because of the impossibility of using \n inside f strings
 
@@ -10,7 +11,8 @@ commands_templates = {
     "cities": "$cities",
     "weather": "$weather <city> <day (from 0 to 4)>",
     "help": "$help",
-    "setCity": "$setCity <city>"
+    "setCity": "$setCity <city>",
+    "deleteCity": "$deleteCity <city>"
 }
 
 # Commands and their functionalities
@@ -18,7 +20,8 @@ commands_functionalities = {
     "cities": lambda *args: message_prettify.cities_list_prettify(data_grabbing.get_all_cities()),
     "weather": lambda *args: get_message_to_send_weather_for_city(args[0]),
     "help": lambda *args: message_prettify.help_prettify(commands_templates),
-    "setCity": lambda *args: set_city_handler(*args)
+    "setCity": lambda *args: set_city_handler(*args),
+    "deleteCity": lambda *args: delete_city_handler(*args)
 }
 
 
@@ -88,5 +91,23 @@ def set_city_handler(*args):
             message_to_send = message_prettify.error_prettify(e)
         else:
             message_to_send = message_prettify.default_message_prettify("Cidade inserida com sucesso.")
+
+    return message_to_send
+
+
+def delete_city_handler(*args):
+    city_name, server_id = args
+
+    try:
+        city_code = data_grabbing.get_city_code(city_name)
+    except Exception as e:
+        message_to_send = message_prettify.error_prettify(e)
+    else:
+        try:
+            delete_server_city(server_id, city_code)
+        except Exception as e:
+            message_to_send = message_prettify.error_prettify(e)
+        else:
+            message_to_send = message_prettify.default_message_prettify("Cidade removida com sucesso.")
 
     return message_to_send
