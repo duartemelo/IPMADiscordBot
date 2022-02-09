@@ -18,10 +18,26 @@
 **In order to help to develop this bot and code and test by yourself, you must:**
 
 - Install all dependencies (python-dotenv, discord, psycopg2);
-- Create a .env file with the token for your bot (TOKEN=your token)
+- Create a .env file with the token for your bot  
+![.env file](readmeimages/env.png)
 - Create a database.ini file inside database_stuff with PostgresSQL configuration data like shown below  
 ![Database.ini](readmeimages/databaseinistuffv2.png)
 - Have the database created with the necessary tables
+```
+CREATE DATABASE IPMADiscordBot;
+
+CREATE TABLE cities(
+	city_code bigint NOT NULL,
+	server_id bigint NOT NULL,
+	CONSTRAINT cities_pk PRIMARY KEY (city_code, server_id)
+);
+
+CREATE TABLE schedule(
+	 city_code bigint NOT NULL,
+	 schedule time NOT NULL,
+	 CONSTRAINT schedule_pk PRIMARY KEY (city_code)
+);
+```
 
 ### Useful links
 
