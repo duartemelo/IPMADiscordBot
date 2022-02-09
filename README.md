@@ -16,7 +16,7 @@
 
 ## Setup
 
-**In order to help to develop this bot and code and test by yourself, you must:**
+**In order to help to develop this bot and code or test it by yourself, you must:**
 
 - Install all dependencies (python-dotenv, discord, psycopg2);
 - Create a .env file with the token for your bot  
