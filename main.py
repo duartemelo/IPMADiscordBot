@@ -7,6 +7,7 @@ client = discord.Client()
 
 prefix = "$"
 
+
 # When bot has logged in.
 @client.event
 async def on_ready():

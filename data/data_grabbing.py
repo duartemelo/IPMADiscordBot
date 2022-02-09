@@ -2,6 +2,7 @@ import requests
 import json
 import exceptions
 
+
 # Returns the name of a city with a specific city_code (passed by argument)
 def get_city(city_code):
     city = None
@@ -31,8 +32,6 @@ def get_all_cities():
     except Exception as e:
         print(e)
 
-
-
     return cities
 
 
@@ -51,7 +50,7 @@ def get_city_code(city):
                 break
 
         if city_code is None:
-            raise exceptions.CityDoesNotExist
+            raise exceptions.CityDoesNotExist(f"Cidade {city} não existe. $cities para ver lista de cidades")
 
     except Exception as e:
         raise e
@@ -59,7 +58,10 @@ def get_city_code(city):
         return city_code
 
 
-def get_weather(city_code, day):  # Braga 1030300 # Day = 0 if today, 1 tomorrow, etc.
+# Returns the weather for a city
+# receives the city code
+# receives the day that user wants to get weather info from
+def get_weather(city_code, day):  # example: Braga = 1030300 # Day = 0 if today, 1 tomorrow, etc.
 
     weather = {
         "precipitaProb": None,
@@ -79,10 +81,9 @@ def get_weather(city_code, day):  # Braga 1030300 # Day = 0 if today, 1 tomorrow
             weather[key] = json_data['data'][day][key]
         weather['idWeatherType'] = get_weather_type(weather['idWeatherType'])
     except IndexError:
-        return f"Dia inserido ({day}) inválido. Insira um dia entre 0 (hoje) e 4."
+        raise IndexError("Dia inserido ({day}) inválido. Insira um dia entre 0 (hoje) e 4.")
     except Exception as e:
-        return e
-
+        raise e
 
     return weather
 
@@ -106,6 +107,5 @@ def get_weather_type(weather_id):
 
     except Exception as e:
         print(e)
-
 
     return weather_type

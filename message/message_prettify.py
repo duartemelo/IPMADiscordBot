@@ -1,6 +1,6 @@
 import discord
 
-from data import data_grabbing
+from data.data_grabbing import get_city
 import utils
 
 
@@ -27,6 +27,7 @@ fields_suffixes = {
 # Function that returns an embed discord response with the list of all the cities available at IPMA API
 # (prettifies the data to be shown)
 def cities_list_prettify(cities_list):
+    # dividing the cities list in two
     cities_list_first_half = cities_list[:len(cities_list)//2]
     cities_list_second_half = cities_list[len(cities_list)//2:]
 
@@ -51,7 +52,7 @@ def cities_list_prettify(cities_list):
 # Function that returns an embed discord response with the weather of a city (prettifies the data to be shown)
 def get_weather_prettify(weather_dict, city_code):
 
-    embed_response = discord.Embed(title=data_grabbing.get_city(city_code),
+    embed_response = discord.Embed(title=get_city(city_code),
                                    description="Previsão do tempo",
                                    color=0x6FD9F8)
 
@@ -71,10 +72,15 @@ def help_prettify(commands):
                                    color=0x6FD9F8)
 
     commands_list = list(commands.keys())
+    values_list = list(commands.values())
 
     embed_response.add_field(name="Comandos",
                              value=utils.list_to_string(commands_list, "\n"),
-                             inline=False)
+                             inline=True)
+
+    embed_response.add_field(name="Exemplo",
+                             value=utils.list_to_string(values_list, "\n"),
+                             inline=True)
 
     return embed_response
 

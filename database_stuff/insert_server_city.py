@@ -17,7 +17,6 @@ def insert_server_city(server_id, city_code):
         cur.execute(sql, (server_id, city_code))
         conn.commit()
         cur.close()
-        return True
     except psycopg2.errors.UniqueViolation:
         raise exceptions.DuplicateValue(f"A cidade {data_grabbing.get_city(city_code)} já está na base de dados.")
     except Exception as e:
@@ -25,6 +24,3 @@ def insert_server_city(server_id, city_code):
     finally:
         if conn is not None:
             conn.close()
-
-
-
