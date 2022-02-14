@@ -4,7 +4,7 @@ import exceptions
 
 def insert_server_schedule(server_id, schedule):
     sql = f"""INSERT INTO schedule(server_id, schedule)
-            VALUES ({server_id}, {schedule});"""
+            VALUES ({server_id}, '{schedule}');"""
 
     conn = None
 

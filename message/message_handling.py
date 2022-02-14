@@ -3,6 +3,7 @@ from data import data_grabbing
 from message import message_prettify
 from database_stuff.insert_server_city import insert_server_city
 from database_stuff.delete_server_city import delete_server_city
+from database_stuff.insert_server_schedule import insert_server_schedule
 
 backslash_n = "\n"  # created because of the impossibility of using \n inside f strings
 
@@ -12,7 +13,8 @@ commands_templates = {
     "weather": "$weather <city> <day (from 0 to 4)>",
     "help": "$help",
     "setCity": "$setCity <city>",
-    "deleteCity": "$deleteCity <city>"
+    "deleteCity": "$deleteCity <city>",
+    "setTime": "$setTime <time>"
 }
 
 # Commands and their functionalities
@@ -21,7 +23,8 @@ commands_functionalities = {
     "weather": lambda *args: get_message_to_send_weather_for_city(args[0]),
     "help": lambda *args: message_prettify.help_prettify(commands_templates),
     "setCity": lambda *args: set_city_handler(*args),
-    "deleteCity": lambda *args: delete_city_handler(*args)
+    "deleteCity": lambda *args: delete_city_handler(*args),
+    "setTime": lambda *args: set_time_handler(*args)
 }
 
 
@@ -109,5 +112,18 @@ def delete_city_handler(*args):
             message_to_send = message_prettify.error_prettify(e)
         else:
             message_to_send = message_prettify.default_message_prettify("Cidade removida com sucesso.")
+
+    return message_to_send
+
+
+def set_time_handler(*args):
+    schedule, server_id = args
+
+    try:
+        insert_server_schedule(server_id, schedule)
+    except Exception as e:
+        message_to_send = message_prettify.error_prettify(e)
+    else:
+        message_to_send = message_prettify.default_message_prettify("Temporizador adicionado com sucesso.")
 
     return message_to_send
