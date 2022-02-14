@@ -4,6 +4,7 @@ from message import message_prettify
 from database_stuff.insert_server_city import insert_server_city
 from database_stuff.delete_server_city import delete_server_city
 from database_stuff.insert_server_schedule import insert_server_schedule
+from database_stuff.delete_server_schedule import delete_server_schedule
 
 backslash_n = "\n"  # created because of the impossibility of using \n inside f strings
 
@@ -15,7 +16,8 @@ commands_templates = {
     "commands": "$commands",
     "setCity": "$setCity <city>",
     "deleteCity": "$deleteCity <city>",
-    "setTime": "$setTime <time>"
+    "setTime": "$setTime <time>",
+    "deleteTime": "$deleteTime"
 }
 
 # Commands and their functionalities
@@ -26,7 +28,8 @@ commands_functionalities = {
     "commands": lambda *args: message_prettify.help_prettify(commands_templates),
     "setCity": lambda *args: set_city_handler(*args),
     "deleteCity": lambda *args: delete_city_handler(*args),
-    "setTime": lambda *args: set_time_handler(*args)
+    "setTime": lambda *args: set_time_handler(*args),
+    "deleteTime": lambda *args: delete_time_handler(*args)
 }
 
 
@@ -85,6 +88,9 @@ def get_message_to_send_weather_for_city(args):
 def set_city_handler(*args):
     city_name, server_id = args
 
+    if city_name == "":
+        return message_prettify.error_prettify(commands_templates["setCity"])
+
     try:
         city_code = data_grabbing.get_city_code(city_name)
     except Exception as e:
@@ -100,8 +106,13 @@ def set_city_handler(*args):
     return message_to_send
 
 
+# Handles the delete city command, receives the city_name and server_id as arguments
+# calls delete_server_city that does the database related stuff
 def delete_city_handler(*args):
     city_name, server_id = args
+
+    if city_name == "":
+        return message_prettify.error_prettify(commands_templates["deleteCity"])
 
     try:
         city_code = data_grabbing.get_city_code(city_name)
@@ -118,8 +129,13 @@ def delete_city_handler(*args):
     return message_to_send
 
 
+# Handles the set time command, receives the schedule (time without time zone) and the server_id as arguments
+# calls insert_server_schedule that does the database stuff
 def set_time_handler(*args):
     schedule, server_id = args
+
+    if schedule == "":
+        return message_prettify.error_prettify(commands_templates["deleteTime"])
 
     try:
         insert_server_schedule(server_id, schedule)
@@ -127,5 +143,18 @@ def set_time_handler(*args):
         message_to_send = message_prettify.error_prettify(e)
     else:
         message_to_send = message_prettify.default_message_prettify("Temporizador adicionado com sucesso.")
+
+    return message_to_send
+
+
+def delete_time_handler(*args):
+    server_id = args[-1]
+
+    try:
+        delete_server_schedule(server_id)
+    except Exception as e:
+        message_to_send = message_prettify.error_prettify(e)
+    else:
+        message_to_send = message_prettify.default_message_prettify("Temporizador removido com sucesso.")
 
     return message_to_send
