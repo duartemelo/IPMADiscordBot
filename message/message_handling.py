@@ -6,6 +6,7 @@ from database_stuff.delete_server_city import delete_server_city
 from database_stuff.insert_server_schedule import insert_server_schedule
 from database_stuff.delete_server_schedule import delete_server_schedule
 from database_stuff.select_city_count import select_city_count
+from database_stuff.select_cities import select_cities
 
 backslash_n = "\n"  # created because of the impossibility of using \n inside f strings
 
@@ -15,6 +16,7 @@ commands_templates = {
     "weather": "$weather <city> <day (from 0 to 4)>",
     "help": "$help",
     "commands": "$commands",
+    "viewCities": "$viewCities",
     "setCity": "$setCity <city>",
     "deleteCity": "$deleteCity <city>",
     "setTime": "$setTime <time>",
@@ -27,6 +29,7 @@ commands_functionalities = {
     "weather": lambda *args: get_message_to_send_weather_for_city(args[0]),
     "help": lambda *args: message_prettify.help_prettify(commands_templates),
     "commands": lambda *args: message_prettify.help_prettify(commands_templates),
+    "viewCities": lambda *args: view_cities_handler(*args),
     "setCity": lambda *args: set_city_handler(*args),
     "deleteCity": lambda *args: delete_city_handler(*args),
     "setTime": lambda *args: set_time_handler(*args),
@@ -82,6 +85,26 @@ def get_message_to_send_weather_for_city(args):
                 message_to_send = message_prettify.error_prettify(e)
 
         return message_to_send
+
+
+def view_cities_handler(*args):
+    server_id = args[-1]
+
+    try:
+        rows = select_cities(server_id)
+        if len(rows) > 0:
+            cities = []
+
+            i = 0
+            for row in rows:
+                cities.append(data_grabbing.get_city(row[0]))
+            message_to_send = message_prettify.cities_list_prettify(cities)
+        else:
+            message_to_send = message_prettify.default_message_prettify("Servidor sem cidades.")
+    except Exception as e:
+        message_to_send = message_prettify.error_prettify(e)
+
+    return message_to_send
 
 
 # Handles the set city command, receives the city_name and the server_id as arguments

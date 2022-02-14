@@ -2,7 +2,7 @@ import psycopg2
 from database_stuff.db_config import config
 
 
-def select_city_count(server_id):
+def select_cities(server_id):
     sql = f"""SELECT city_code from cities
             where server_id = {server_id}"""
 
@@ -13,8 +13,7 @@ def select_city_count(server_id):
         conn = psycopg2.connect(**params)
         cur = conn.cursor()
         cur.execute(sql, server_id)
-        result = cur.fetchone()
-        print(result)
+        result = cur.fetchall()
         conn.commit()
         cur.close()
         return result

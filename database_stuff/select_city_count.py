@@ -17,6 +17,8 @@ def select_city_count(server_id):
         result = cur.fetchone()
         if result is None:
             result = 0
+        else:
+            result = result[0]
         conn.commit()
         cur.close()
         return result
