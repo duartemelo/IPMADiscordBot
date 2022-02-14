@@ -12,6 +12,7 @@ commands_templates = {
     "cities": "$cities",
     "weather": "$weather <city> <day (from 0 to 4)>",
     "help": "$help",
+    "commands": "$commands",
     "setCity": "$setCity <city>",
     "deleteCity": "$deleteCity <city>",
     "setTime": "$setTime <time>"
@@ -22,6 +23,7 @@ commands_functionalities = {
     "cities": lambda *args: message_prettify.cities_list_prettify(data_grabbing.get_all_cities()),
     "weather": lambda *args: get_message_to_send_weather_for_city(args[0]),
     "help": lambda *args: message_prettify.help_prettify(commands_templates),
+    "commands": lambda *args: message_prettify.help_prettify(commands_templates),
     "setCity": lambda *args: set_city_handler(*args),
     "deleteCity": lambda *args: delete_city_handler(*args),
     "setTime": lambda *args: set_time_handler(*args)
