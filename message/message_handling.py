@@ -5,6 +5,7 @@ from database_stuff.insert_server_city import insert_server_city
 from database_stuff.delete_server_city import delete_server_city
 from database_stuff.insert_server_schedule import insert_server_schedule
 from database_stuff.delete_server_schedule import delete_server_schedule
+from database_stuff.select_city_count import select_city_count
 
 backslash_n = "\n"  # created because of the impossibility of using \n inside f strings
 
@@ -132,17 +133,27 @@ def delete_city_handler(*args):
 # Handles the set time command, receives the schedule (time without time zone) and the server_id as arguments
 # calls insert_server_schedule that does the database stuff
 def set_time_handler(*args):
+
     schedule, server_id = args
 
     if schedule == "":
         return message_prettify.error_prettify(commands_templates["deleteTime"])
-
     try:
-        insert_server_schedule(server_id, schedule)
+        count = select_city_count(server_id)
+
     except Exception as e:
         message_to_send = message_prettify.error_prettify(e)
     else:
-        message_to_send = message_prettify.default_message_prettify("Temporizador adicionado com sucesso.")
+        if count > 0:
+            try:
+                insert_server_schedule(server_id, schedule)
+            except Exception as e:
+                message_to_send = message_prettify.error_prettify(e)
+            else:
+                message_to_send = message_prettify.default_message_prettify("Temporizador adicionado com sucesso.")
+        else:
+            message_to_send = message_prettify.error_prettify(
+                "Não há cidades definidas neste servidor, primeiro defina uma.")
 
     return message_to_send
 
