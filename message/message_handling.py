@@ -7,10 +7,12 @@ from database_stuff.insert_server_schedule import insert_server_schedule
 from database_stuff.delete_server_schedule import delete_server_schedule
 from database_stuff.select_city_count import select_city_count
 from database_stuff.select_cities import select_cities
+from database_stuff.select_time import select_time
 
 backslash_n = "\n"  # created because of the impossibility of using \n inside f strings
 
 # Commands templates, basically how a command should be used
+# TODO: add description!
 commands_templates = {
     "cities": "$cities",
     "weather": "$weather <city> <day (from 0 to 4)>",
@@ -19,6 +21,7 @@ commands_templates = {
     "viewCities": "$viewCities",
     "setCity": "$setCity <city>",
     "deleteCity": "$deleteCity <city>",
+    "viewTime": "$viewTime",
     "setTime": "$setTime <time>",
     "deleteTime": "$deleteTime"
 }
@@ -32,6 +35,7 @@ commands_functionalities = {
     "viewCities": lambda *args: view_cities_handler(*args),
     "setCity": lambda *args: set_city_handler(*args),
     "deleteCity": lambda *args: delete_city_handler(*args),
+    "viewTime": lambda *args: view_time_handler(*args),
     "setTime": lambda *args: set_time_handler(*args),
     "deleteTime": lambda *args: delete_time_handler(*args)
 }
@@ -95,7 +99,6 @@ def view_cities_handler(*args):
         if len(rows) > 0:
             cities = []
 
-            i = 0
             for row in rows:
                 cities.append(data_grabbing.get_city(row[0]))
             message_to_send = message_prettify.cities_list_prettify(cities)
@@ -149,6 +152,26 @@ def delete_city_handler(*args):
             message_to_send = message_prettify.error_prettify(e)
         else:
             message_to_send = message_prettify.default_message_prettify("Cidade removida com sucesso.")
+
+    return message_to_send
+
+
+
+def view_time_handler(*args):
+    server_id = args[-1]
+
+    try:
+        rows = select_time(server_id)
+        if len(rows) > 0:
+            time = []
+
+            for row in rows:
+                time.append(str(row[0]))
+            message_to_send = message_prettify.default_message_prettify(time)  # TODO: prettify
+        else:
+            message_to_send = message_prettify.default_message_prettify("Servidor sem temporizador definido.")
+    except Exception as e:
+        message_to_send = message_prettify.error_prettify(e)
 
     return message_to_send
 
