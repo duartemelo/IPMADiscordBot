@@ -12,7 +12,7 @@ from database_stuff.select_time import select_time
 backslash_n = "\n"  # created because of the impossibility of using \n inside f strings
 
 # Commands templates, basically how a command should be used
-# TODO: add description!
+# TODO: add description (?)
 commands_templates = {
     "cities": "$cities",
     "weather": "$weather <city> <day (from 0 to 4)>",
