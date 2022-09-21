@@ -8,8 +8,8 @@
 ## Features
 
 - Check the city list;
-- Set the city you want to receive weather info from;
-- Set the time of the day you want to receive that info (the bot sends a message everyday).
+- Set the city you want to receive weather info from (in your server);
+- Set the time of the day you want to receive that info (the bot sends a message everyday at that time, in that specific server and room).
 
 ## Stack
 
