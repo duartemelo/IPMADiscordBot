@@ -99,7 +99,7 @@ def get_weather_type(weather_id):
 
         for weather_type_data in json_data['data']:
             if weather_type_data['idWeatherType'] == weather_id:
-                weather_type = weather_type_data['descIdWeatherTypePT']
+                weather_type = weather_type_data['descWeatherTypePT']
                 break
 
         if weather_type is None:
