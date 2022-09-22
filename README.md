@@ -2,8 +2,6 @@
 
 **A bot that consists in sending a city's weather info for a Discord chat channel.**  
 
-**It seems like discord.py is no longer supported.. and unfortunately, this bot can no longer be tested or run...**
-![Discord Py Support](readmeimages/discordpysupport.png)
 
 ## Features
 
