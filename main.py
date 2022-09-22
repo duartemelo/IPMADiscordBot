@@ -3,7 +3,12 @@ import os
 from dotenv import load_dotenv
 from message import message_handling, message_prettify
 
-client = discord.Client()
+class aclient(discord.Client):
+    def __init__(self):
+        super().__init__(intents=discord.Intents.default())
+        self.synced = False #TODO what is this?
+
+client = aclient()
 
 prefix = "$"
 
