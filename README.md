@@ -21,8 +21,10 @@
 
 - Install all dependencies (python-dotenv, discord, psycopg2, requests, etc.);
 - Create a .env file with the token for your bot  
+
 ![.env file](readmeimages/env.png)
 - Create a database.ini file inside database_stuff with PostgresSQL configuration data like shown below  
+
 ![Database.ini](readmeimages/databaseinistuffv2.png)
 - Have the database created with the necessary tables
 ```
