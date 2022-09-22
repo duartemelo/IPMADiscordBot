@@ -14,16 +14,16 @@ backslash_n = "\n"  # created because of the impossibility of using \n inside f 
 # Commands templates, basically how a command should be used
 # TODO: add description (?)
 commands_templates = {
-    "cities": "$cities",
-    "weather": "$weather <city> <day (from 0 to 4)>",
-    "help": "$help",
-    "commands": "$commands",
-    "viewCities": "$viewCities",
-    "setCity": "$setCity <city>",
-    "deleteCity": "$deleteCity <city>",
-    "viewTime": "$viewTime",
-    "setTime": "$setTime <time>",
-    "deleteTime": "$deleteTime"
+    "cities": ["$cities", "Ver as cidades disponíveis no IPMA"],
+    "weather": ["$weather <city> <day (from 0 to 4)>"],
+    "help": ["$help"],
+    "commands": ["$commands"],
+    "viewCities": ["$viewCities"],
+    "setCity": ["$setCity <city>"],
+    "deleteCity": ["$deleteCity <city>"],
+    "viewTime": ["$viewTime"],
+    "setTime": ["$setTime <time>"],
+    "deleteTime": ["$deleteTime"]
 }
 
 # Commands and their functionalities

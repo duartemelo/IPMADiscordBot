@@ -1,3 +1,4 @@
+from sys import excepthook
 import discord
 
 from data.data_grabbing import get_city
@@ -62,7 +63,28 @@ def help_prettify(commands):
                                    color=0x6FD9F8)
 
     commands_list = list(commands.keys())
-    values_list = list(commands.values())
+
+    #TODO: change values_list name
+    values_list = []
+    descriptions_list = []
+    for command in commands_list:
+        try:
+            values_list.append(commands[command][0])
+        except IndexError:
+            values_list.append("Sem exemplo.")
+        except Exception as e:
+            print(e)
+        try:
+            descriptions_list.append(commands[command][1])
+        except IndexError:
+            descriptions_list.append("Sem descrição")
+        except Exception as e:
+            print(e)
+        
+        
+
+
+    # values_list = list(commands.values()[0])
 
     embed_response.add_field(name="Comandos",
                              value=utils.list_to_string(commands_list, "\n"),
@@ -71,6 +93,10 @@ def help_prettify(commands):
     embed_response.add_field(name="Exemplo",
                              value=utils.list_to_string(values_list, "\n"),
                              inline=True)
+
+    embed_response.add_field(name="Descrição",
+                            value=utils.list_to_string(descriptions_list, "\n"),
+                            inline=True)
 
     return embed_response
 
