@@ -1,33 +1,31 @@
 import discord
+from discord.ext import commands
+
 import os
 from dotenv import load_dotenv
 from message import message_handling, message_prettify
 
-class aclient(discord.Client):
-    def __init__(self):
-        super().__init__(intents=discord.Intents.default())
-        self.synced = False #TODO what is this?
-
-client = aclient()
-
+intents = discord.Intents.default()
+intents.message_content = True
 prefix = "$"
 
+class myclient(discord.Client):
 
-# When bot has logged in.
-@client.event
-async def on_ready():
-    await client.change_presence(activity=discord.Game("Telling you weather infos. $help for help."))
-    print('I logged in as {0.user}'.format(client))
+    # bot as logged in
+    async def on_ready(self):
+        await client.change_presence(activity=discord.Game("Telling you weather infos. $help for help."))
+        print('I logged in as {0.user}'.format(client))
+
+    # when the bot receives a message
+    async def on_message(self, message):
+        # print(f"Message from {message.author}: {message.content}") # Testing purposes
 
 
-# When bot receives some message from the user.
-@client.event
-async def on_message(message):
-    if message.author == client.user:  # If the message was sent by the bot.
-        return
+        if message.author == client.user:  # If the message was sent by the bot.
+            return
 
-    else:
-        server_id = message.guild.id  # server id
+        else:
+            server_id = message.guild.id  # server id
         if message.content.startswith(prefix):  # If the message starts with the bot prefix (defined before)
             if len(message.content) > 1:
                 message_content = message.content[1:]
@@ -41,6 +39,8 @@ async def on_message(message):
             else:  # if it's not a Discord embed message (should never happen!)
                 await message.channel.send(f"{message.author.mention}\n{message_to_send}")
 
+
+client = myclient(intents=intents)
 
 load_dotenv()  # loading dotenv with the bot token!
 
