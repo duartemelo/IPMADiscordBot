@@ -31,6 +31,7 @@
     <img src="readmeimages/databaseinistuffv2.png" />
 </p>
 - Have the database created with the necessary tables
+
 ```
 CREATE DATABASE IPMADiscordBot;
 
