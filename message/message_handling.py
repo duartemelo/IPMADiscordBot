@@ -184,6 +184,9 @@ def view_time_handler(*args):
 # calls insert_server_schedule that does the database stuff
 def set_time_handler(*args):
     args_separated = args[0].split(" ") # separates city from time ['city', 'time']
+    if (len(args_separated) != 2):
+        return message_prettify.error_prettify("Comando introduzido incorretamente. Utiliza $help.")
+    
     city_name = args_separated[0]
     schedule = args_separated[1]
     server_id = args[-1]
