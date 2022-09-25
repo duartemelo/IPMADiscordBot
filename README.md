@@ -48,6 +48,10 @@ CREATE TABLE schedule(
 );
 ```
 
+## Commands
+
+**Since commands are constantly being updated, use $help or $commands to check them all.**
+
 ### Useful links
 
 - [Trello](https://trello.com/b/caa0Op4o/ipma-discord-bot)
