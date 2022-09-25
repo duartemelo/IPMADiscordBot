@@ -34,7 +34,6 @@ def cities_list_prettify(cities_list):
                                    color=0x6FD9F8)
 
     cities_list_divided = utils.divide_big_list(cities_list)
-    print(utils.divide_big_list(cities_list))
 
     for i, element in enumerate(cities_list_divided):
         embed_response.add_field(name="Cidades",

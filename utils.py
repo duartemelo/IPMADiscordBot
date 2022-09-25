@@ -12,10 +12,6 @@ def divide_big_list(received_list, separator = "\n", list_amount = 3):
 
     counter = 0
     for i, element in enumerate(received_list):
-        print("position in list:", counter)
-        print("i", i)
-        print("element", element)
-        print("separator", list_separator)
         if (i == list_separator):
             counter+=1
             list_separator+=list_separator
