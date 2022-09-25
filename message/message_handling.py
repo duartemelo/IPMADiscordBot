@@ -15,13 +15,13 @@ backslash_n = "\n"  # created because of the impossibility of using \n inside f 
 # TODO: add more descriptions
 commands_templates = {
     "cities": ["$cities", "Ver as cidades disponíveis no IPMA"],
-    "weather": ["$weather <city> <day (from 0 to 4)>"],
+    "weather": ["$weather <city> <day (0 to 4)>"],
     "help": ["$help"],
     "commands": ["$commands"],
     "viewCities": ["$viewCities"],
     "setCity": ["$setCity <city>"],
     "deleteCity": ["$deleteCity <city>"],
-    "viewTime": ["$viewTime"],
+    "viewTime": ["$viewTime <city>"],
     "setTime": ["$setTime <time>"],
     "deleteTime": ["$deleteTime"]
 }
@@ -58,7 +58,6 @@ def get_message_to_send(message, server_id):
             message_to_send = message_prettify.error_prettify(e)
 
     else:  # command does not exist
-        keys_list = list(commands_templates.values())
         message_to_send = message_prettify.error_prettify(
             f"O comando {command} não existe. $help para ver os comandos disponíveis."
         )
@@ -159,18 +158,22 @@ def delete_city_handler(*args):
 
 def view_time_handler(*args):
     server_id = args[-1]
+    city_name = args[0]
 
     try:
-        rows = select_time(server_id)
+        city_code = data_grabbing.get_city_code(city_name)
+        rows = select_time(server_id, city_code)
         if len(rows) > 0:
             time = []
 
             for row in rows:
                 time.append(str(row[0]))
-            message_to_send = message_prettify.default_message_prettify(time)  # TODO: prettify
+            message_to_send = message_prettify.default_message_prettify(time) 
         else:
-            message_to_send = message_prettify.default_message_prettify("Servidor sem temporizador definido.")
+            message_to_send = message_prettify.default_message_prettify(f"Servidor sem temporizador definido para a cidade de {city_name}.")
     except Exception as e:
+        print(e)
+        print(type(e))
         message_to_send = message_prettify.error_prettify(e)
 
     return message_to_send

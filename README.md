@@ -40,11 +40,11 @@ CREATE TABLE cities(
 	server_id bigint NOT NULL,
 	CONSTRAINT cities_pk PRIMARY KEY (city_code, server_id)
 );
-
 CREATE TABLE schedule(
 	 city_code bigint NOT NULL,
+	 server_id bigint NOT NULL,
 	 schedule time NOT NULL,
-	 CONSTRAINT schedule_pk PRIMARY KEY (city_code)
+	 CONSTRAINT schedule_pk PRIMARY KEY (city_code, server_id)
 );
 ```
 
