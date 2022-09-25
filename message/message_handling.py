@@ -1,3 +1,4 @@
+import sched
 import utils
 from data import data_grabbing
 from message import message_prettify
@@ -22,7 +23,7 @@ commands_templates = {
     "setCity": ["$setCity <city>"],
     "deleteCity": ["$deleteCity <city>"],
     "viewTime": ["$viewTime <city>"],
-    "setTime": ["$setTime <time>"],
+    "setTime": ["$setTime <city> <time>"],
     "deleteTime": ["$deleteTime"]
 }
 
@@ -182,27 +183,40 @@ def view_time_handler(*args):
 # Handles the set time command, receives the schedule (time without time zone) and the server_id as arguments
 # calls insert_server_schedule that does the database stuff
 def set_time_handler(*args):
+    args_separated = args[0].split(" ") # separates city from time ['city', 'time']
+    city_name = args_separated[0]
+    schedule = args_separated[1]
+    server_id = args[-1]
+    
 
-    schedule, server_id = args
-
-    if schedule == "":
+    if schedule == "" or city_name == "":
         return message_prettify.error_prettify(commands_templates["deleteTime"])
-    try:
-        count = select_city_count(server_id)
 
-    except Exception as e:
-        message_to_send = message_prettify.error_prettify(e)
-    else:
-        if count > 0:
+    try:
+        rows = select_cities(server_id)
+
+        if len(rows) > 0:
+            cities = []
+
+            for row in rows:
+                cities.append(row[0])
+        else:
+            return message_prettify.error_prettify("Servidor sem cidades definidas.")
+        
+        city_code = data_grabbing.get_city_code(city_name)
+        if (city_code in cities):            
             try:
-                insert_server_schedule(server_id, schedule)
+                insert_server_schedule(server_id, schedule, city_code)
             except Exception as e:
                 message_to_send = message_prettify.error_prettify(e)
             else:
                 message_to_send = message_prettify.default_message_prettify("Temporizador adicionado com sucesso.")
         else:
             message_to_send = message_prettify.error_prettify(
-                "Não há cidades definidas neste servidor, primeiro defina uma.")
+                f"A cidade de {city_name} não está adicionada ao servidor, primeiro adicione com $setCity.")
+
+    except Exception as e:
+        message_to_send = message_prettify.error_prettify(e)
 
     return message_to_send
 
