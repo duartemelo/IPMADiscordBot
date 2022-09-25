@@ -33,8 +33,12 @@ def cities_list_prettify(cities_list):
                                    description="Lista de cidades",
                                    color=0x6FD9F8)
 
-    embed_response.add_field(name="Cidades",
-                             value=utils.list_to_string(cities_list),
+    cities_list_divided = utils.divide_big_list(cities_list)
+    print(utils.divide_big_list(cities_list))
+
+    for i, element in enumerate(cities_list_divided):
+        embed_response.add_field(name="Cidades",
+                             value=cities_list_divided[i],
                              inline=True)
 
     return embed_response
@@ -64,14 +68,13 @@ def help_prettify(commands):
 
     commands_list = list(commands.keys())
 
-    #TODO: change values_list name
-    values_list = []
+    examples_list = []
     descriptions_list = []
     for command in commands_list:
         try:
-            values_list.append(commands[command][0])
+            examples_list.append(commands[command][0])
         except IndexError:
-            values_list.append("Sem exemplo.")
+            examples_list.append("Sem exemplo.")
         except Exception as e:
             print(e)
         try:
@@ -91,7 +94,7 @@ def help_prettify(commands):
                              inline=True)
 
     embed_response.add_field(name="Exemplo",
-                             value=utils.list_to_string(values_list, "\n"),
+                             value=utils.list_to_string(examples_list, "\n"),
                              inline=True)
 
     embed_response.add_field(name="Descrição",
