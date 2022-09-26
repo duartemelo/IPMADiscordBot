@@ -22,7 +22,7 @@ commands_templates = {
     "viewCities": ["$viewCities"],
     "setCity": ["$setCity <city>"],
     "deleteCity": ["$deleteCity <city>"],
-    "viewTime": ["$viewTime <city>"],
+    "viewTime": ["$viewTime"],
     "setTime": ["$setTime <city> <time>"],
     "deleteTime": ["$deleteTime"]
 }
@@ -159,19 +159,21 @@ def delete_city_handler(*args):
 
 def view_time_handler(*args):
     server_id = args[-1]
-    city_name = args[0]
 
     try:
-        city_code = data_grabbing.get_city_code(city_name)
-        rows = select_time(server_id, city_code)
+        rows = select_time(server_id)
         if len(rows) > 0:
-            time = []
-
+            time = ""
             for row in rows:
-                time.append(str(row[0]))
+                row_time = str(row[0])
+                city_code = str(row[1])
+                city_name = data_grabbing.get_city(city_code)
+
+                time+=(f"{city_name}, {row_time}\n")
+                
             message_to_send = message_prettify.default_message_prettify(time) 
         else:
-            message_to_send = message_prettify.default_message_prettify(f"Servidor sem temporizador definido para a cidade de {city_name}.")
+            message_to_send = message_prettify.default_message_prettify(f"Servidor sem temporizador definido para nenhuma cidade.")
     except Exception as e:
         print(e)
         print(type(e))

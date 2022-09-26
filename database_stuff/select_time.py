@@ -2,9 +2,9 @@ import psycopg2
 from database_stuff.db_config import config
 
 
-def select_time(server_id, city_code):
-    sql = f"""SELECT schedule from schedule
-            where server_id = {server_id} and city_code = {city_code}"""
+def select_time(server_id):
+    sql = f"""SELECT schedule, city_code from schedule
+            where server_id = {server_id}"""
 
     conn = None
 

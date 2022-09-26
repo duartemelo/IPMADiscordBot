@@ -5,6 +5,10 @@ import exceptions
 
 # Returns the name of a city with a specific city_code (passed by argument)
 def get_city(city_code):
+    try:
+        city_code = int(city_code)
+    except Exception as e:
+        raise e
     city = None
     response = requests.get("https://api.ipma.pt/open-data/distrits-islands.json")
     json_data = json.loads(response.text)
