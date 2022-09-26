@@ -1,3 +1,4 @@
+from email.policy import default
 from sys import excepthook
 import discord
 
@@ -27,13 +28,13 @@ fields_suffixes = {
 
 # Function that returns an embed discord response with the list of all the cities available at IPMA API
 # (prettifies the data to be shown)
-def cities_list_prettify(cities_list):
+def cities_list_prettify(cities_list, list_amount = 3, description="Lista de cidades"):
 
     embed_response = discord.Embed(title="Cidades",
-                                   description="Lista de cidades",
+                                   description=description,
                                    color=0x6FD9F8)
 
-    cities_list_divided = utils.divide_big_list(cities_list)
+    cities_list_divided = utils.divide_big_list(cities_list, list_amount=list_amount)
 
     for i, element in enumerate(cities_list_divided):
         embed_response.add_field(name="Cidades",

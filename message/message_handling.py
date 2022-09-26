@@ -13,23 +13,22 @@ from database_stuff.select_time import select_time
 backslash_n = "\n"  # created because of the impossibility of using \n inside f strings
 
 # Commands templates, basically how a command should be used
-# TODO: add more descriptions
 commands_templates = {
     "cities": ["$cities", "Ver as cidades disponíveis no IPMA"],
-    "weather": ["$weather <city> <day (0 to 4)>"],
-    "help": ["$help"],
-    "commands": ["$commands"],
-    "viewCities": ["$viewCities"],
-    "setCity": ["$setCity <city>"],
-    "deleteCity": ["$deleteCity <city>"],
-    "viewTime": ["$viewTime"],
-    "setTime": ["$setTime <city> <time>"],
-    "deleteTime": ["$deleteTime"]
+    "weather": ["$weather <city> <day (0 to 4)>", "Ver meteorologia para cidade"],
+    "help": ["$help", "Ajuda/comandos"],
+    "commands": ["$commands", "Ver comandos"],
+    "viewCities": ["$viewCities", "Ver as cidades que estão definidas para o servidor."],
+    "setCity": ["$setCity <city>", "Definir uma cidade para este servidor."],
+    "deleteCity": ["$deleteCity <city>", "Apagar uma cidade deste servidor."],
+    "viewTime": ["$viewTime", "Ver os temporizadores definidos para as cidades do servidor."],
+    "setTime": ["$setTime <city> <time>", "Definir um temporizador para uma cidade deste servidor."],
+    "deleteTime": ["$deleteTime", "Apagar o temporizador de uma cidade deste servidor."]
 }
 
 # Commands and their functionalities
 commands_functionalities = {
-    "cities": lambda *args: message_prettify.cities_list_prettify(data_grabbing.get_all_cities()),
+    "cities": lambda *args: message_prettify.cities_list_prettify(data_grabbing.get_all_cities(), description="Lista de cidades presentes no IPMA."),
     "weather": lambda *args: get_message_to_send_weather_for_city(args[0]),
     "help": lambda *args: message_prettify.help_prettify(commands_templates),
     "commands": lambda *args: message_prettify.help_prettify(commands_templates),
@@ -101,7 +100,7 @@ def view_cities_handler(*args):
 
             for row in rows:
                 cities.append(data_grabbing.get_city(row[0]))
-            message_to_send = message_prettify.cities_list_prettify(cities)
+            message_to_send = message_prettify.cities_list_prettify(cities, 1, "Lista de cidades definida para este servidor.")
         else:
             message_to_send = message_prettify.default_message_prettify("Servidor sem cidades.")
     except Exception as e:
