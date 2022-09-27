@@ -23,7 +23,7 @@ commands_templates = {
     "deleteCity": ["$deleteCity <city>", "Apagar uma cidade deste servidor."],
     "viewTime": ["$viewTime", "Ver os temporizadores definidos para as cidades do servidor."],
     "setTime": ["$setTime <city> <time>", "Definir um temporizador para uma cidade deste servidor."],
-    "deleteTime": ["$deleteTime", "Apagar o temporizador de uma cidade deste servidor."]
+    "deleteTime": ["$deleteTime <city>", "Apagar o temporizador de uma cidade deste servidor."]
 }
 
 # Commands and their functionalities
@@ -227,9 +227,14 @@ def set_time_handler(*args):
 
 def delete_time_handler(*args):
     server_id = args[-1]
+    city_name = args[0]
+    if args[0] == "":
+        message_to_send = message_prettify.error_prettify("Insere uma cidade.")
+        return message_to_send
+    city_code = data_grabbing.get_city_code(city_name)
 
     try:
-        delete_server_schedule(server_id)
+        delete_server_schedule(server_id, city_code)
     except Exception as e:
         message_to_send = message_prettify.error_prettify(e)
     else:

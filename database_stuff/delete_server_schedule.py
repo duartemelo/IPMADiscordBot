@@ -2,9 +2,9 @@ import psycopg2
 from database_stuff.db_config import config
 
 
-def delete_server_schedule(server_id):
+def delete_server_schedule(server_id, city_code):
     sql = f"""DELETE FROM schedule 
-    WHERE server_id = {server_id}"""
+    WHERE server_id = {server_id} and city_code = {city_code}"""
 
     conn = None
 
