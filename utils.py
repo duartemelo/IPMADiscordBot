@@ -23,3 +23,13 @@ def divide_big_list(received_list, separator = "\n", list_amount = 3):
 
     return strings_list
 
+
+
+def generate_condition_string(condition_names, condition_values):
+    condition_string = ""
+    for index, element in enumerate(condition_names):
+        condition_string+=f"{element} = {condition_values[index]}"
+        if (index != len(condition_names)-1):
+            condition_string+=" AND "
+    
+    return condition_string

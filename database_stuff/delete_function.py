@@ -1,17 +1,13 @@
 import psycopg2
 from database_stuff.db_config import config
-from utils import generate_condition_string, list_to_string
+from utils import generate_condition_string
 
-
-def select_function(server_id, db_name, select_list, condition_names, condition_values):
-
+def delete_function(server_id, db_name, condition_names, condition_values):
     condition_string = generate_condition_string(condition_names, condition_values)
 
+    sql = f"""DELETE FROM {db_name} WHERE {condition_string}"""
+    print(sql)
 
-    sql = f"""SELECT {list_to_string(select_list, ",")} from {db_name}
-            where {condition_string};"""
-
-    
     conn = None
 
     try:
