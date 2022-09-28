@@ -1,4 +1,5 @@
 import sched
+from database_stuff.select_function import select_function
 import utils
 from data import data_grabbing
 from message import message_prettify
@@ -6,8 +7,6 @@ from database_stuff.insert_server_city import insert_server_city
 from database_stuff.delete_server_city import delete_server_city
 from database_stuff.insert_server_schedule import insert_server_schedule
 from database_stuff.delete_server_schedule import delete_server_schedule
-from database_stuff.select_cities import select_cities
-from database_stuff.select_time import select_time
 
 backslash_n = "\n"  # created because of the impossibility of using \n inside f strings
 
@@ -93,7 +92,7 @@ def view_cities_handler(*args):
     server_id = args[-1]
 
     try:
-        rows = select_cities(server_id)
+        rows = select_function(server_id, "cities", ["city_code"], ["server_id"], [server_id])
         if len(rows) > 0:
             cities = []
 
@@ -159,7 +158,7 @@ def view_time_handler(*args):
     server_id = args[-1]
 
     try:
-        rows = select_time(server_id)
+        rows = select_function(server_id, "schedule", ["schedule", "city_code"], ["server_id"], [server_id])
         if len(rows) > 0:
             time = ""
             for row in rows:
@@ -196,7 +195,7 @@ def set_time_handler(*args):
         return message_prettify.error_prettify(commands_templates["deleteTime"])
 
     try:
-        rows = select_cities(server_id)
+        rows = select_function(server_id, "cities", ["city_code"], ["server_id"], [server_id])
 
         if len(rows) > 0:
             cities = []
