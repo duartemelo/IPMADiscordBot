@@ -6,7 +6,6 @@ from data import data_grabbing
 from message import message_prettify
 from database_stuff.insert_server_city import insert_server_city
 from database_stuff.insert_server_schedule import insert_server_schedule
-from database_stuff.delete_server_schedule import delete_server_schedule
 
 backslash_n = "\n"  # created because of the impossibility of using \n inside f strings
 
@@ -232,7 +231,7 @@ def delete_time_handler(*args):
     city_code = data_grabbing.get_city_code(city_name)
 
     try:
-        delete_server_schedule(server_id, city_code)
+        delete_function(server_id, "schedule", ["server_id", "city_code"], [server_id, city_code])
     except Exception as e:
         message_to_send = message_prettify.error_prettify(e)
     else:
