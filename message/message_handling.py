@@ -144,6 +144,7 @@ def delete_city_handler(*args):
     else:
         try:
             delete_function(server_id, "cities", ["city_code", "server_id"], [city_code, server_id])
+            delete_function(server_id, "schedule", ["server_id", "city_code"], [server_id, city_code])
         except Exception as e:
             message_to_send = message_prettify.error_prettify(e)
         else:
