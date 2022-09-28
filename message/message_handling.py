@@ -64,41 +64,42 @@ def get_message_to_send(message, server_id):
 
 # Returns the message to send to the user when he does $weather <city>
 def get_message_to_send_weather_for_city(args):
-    args_separated = args.split(" ")
+    args_separated = args.split(" ") # separating args
 
     if len(args_separated) < 2:
         return message_prettify.error_prettify(commands_templates["weather"])  # user did not write the day
 
     else:
-        given_city = args_separated[0]
-        day = int(args_separated[1])
+        given_city = args_separated[0] # $weather <city [0]> <day [1]>
+        day = int(args_separated[1]) # $weather <city [0]> <day [1]>
 
         try:
-            city_code = data_grabbing.get_city_code(given_city)
+            city_code = data_grabbing.get_city_code(given_city) # get city code (we only have city name)
         except Exception as e:
-            message_to_send = message_prettify.error_prettify(e)
+            message_to_send = message_prettify.error_prettify(e) # some error getting the city_code (city does not exist, for example)
         else:
             try:
-                weather_response = data_grabbing.get_weather(city_code, day)
-                message_to_send = message_prettify.get_weather_prettify(weather_response, city_code)
+                weather_response = data_grabbing.get_weather(city_code, day) # get weather for day specified and city specified
+                message_to_send = message_prettify.get_weather_prettify(weather_response, city_code) # "prepare"/"prettify" message to send
             except Exception as e:
-                message_to_send = message_prettify.error_prettify(e)
+                message_to_send = message_prettify.error_prettify(e) # something wrong happened
 
         return message_to_send
 
 
-def view_cities_handler(*args):
+# Returns the message with the cities the user defined for the server
+def view_cities_handler(*args): 
     server_id = args[-1]
 
     try:
-        rows = select_function(server_id, "cities", ["city_code"], ["server_id"], [server_id])
-        if len(rows) > 0:
+        rows = select_function(server_id, "cities", ["city_code"], ["server_id"], [server_id]) # doing a select on the PostgreSQL database
+        if len(rows) > 0: # if there is any city defined
             cities = []
 
             for row in rows:
-                cities.append(data_grabbing.get_city(row[0]))
+                cities.append(data_grabbing.get_city(row[0])) # transforming city_codes into city_names
             message_to_send = message_prettify.cities_list_prettify(cities, 1, "Lista de cidades definida para este servidor.")
-        else:
+        else: # no cities defined
             message_to_send = message_prettify.default_message_prettify("Servidor sem cidades.")
     except Exception as e:
         message_to_send = message_prettify.error_prettify(e)
@@ -144,7 +145,7 @@ def delete_city_handler(*args):
     else:
         try:
             delete_function(server_id, "cities", ["city_code", "server_id"], [city_code, server_id])
-            delete_function(server_id, "schedule", ["server_id", "city_code"], [server_id, city_code])
+            delete_function(server_id, "schedule", ["server_id", "city_code"], [server_id, city_code]) # when deleting a city, it deletes the schedules for that city too
         except Exception as e:
             message_to_send = message_prettify.error_prettify(e)
         else:

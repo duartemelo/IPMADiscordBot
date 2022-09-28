@@ -1,6 +1,6 @@
 # IPMA Discord Bot
 
-**A bot that consists in sending a city's weather info for a Discord chat channel.**  
+**A bot that consists in sending a city's (or multiple cities') weather info for a Discord chat channel.**  
 
 
 ## Features
