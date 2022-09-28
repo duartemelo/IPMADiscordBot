@@ -6,7 +6,6 @@ from database_stuff.insert_server_city import insert_server_city
 from database_stuff.delete_server_city import delete_server_city
 from database_stuff.insert_server_schedule import insert_server_schedule
 from database_stuff.delete_server_schedule import delete_server_schedule
-from database_stuff.select_city_count import select_city_count
 from database_stuff.select_cities import select_cities
 from database_stuff.select_time import select_time
 

@@ -1,8 +1,12 @@
 import psycopg2
 from database_stuff.db_config import config
+from database_stuff.select_function import select_function
 
 
 def select_time(server_id):
+
+    return select_function(server_id, "schedule", ["schedule", "city_code"], ["server_id"], [server_id])
+
     sql = f"""SELECT schedule, city_code from schedule
             where server_id = {server_id}"""
 
