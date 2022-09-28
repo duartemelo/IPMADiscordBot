@@ -1,10 +1,10 @@
 import sched
+from database_stuff.delete_function import delete_function
 from database_stuff.select_function import select_function
 import utils
 from data import data_grabbing
 from message import message_prettify
 from database_stuff.insert_server_city import insert_server_city
-from database_stuff.delete_server_city import delete_server_city
 from database_stuff.insert_server_schedule import insert_server_schedule
 from database_stuff.delete_server_schedule import delete_server_schedule
 
@@ -131,7 +131,7 @@ def set_city_handler(*args):
 
 
 # Handles the delete city command, receives the city_name and server_id as arguments
-# calls delete_server_city that does the database related stuff
+# calls delete_function that does the database related stuff
 def delete_city_handler(*args):
     city_name, server_id = args
 
@@ -144,7 +144,7 @@ def delete_city_handler(*args):
         message_to_send = message_prettify.error_prettify(e)
     else:
         try:
-            delete_server_city(server_id, city_code)
+            delete_function(server_id, "cities", ["city_code", "server_id"], [city_code, server_id])
         except Exception as e:
             message_to_send = message_prettify.error_prettify(e)
         else:
