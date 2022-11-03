@@ -1,3 +1,5 @@
+#TODO: Handle cities with more than 1 word!
+
 import sched
 from database_stuff.delete_function import delete_function
 from database_stuff.select_function import select_function
@@ -67,11 +69,22 @@ def get_message_to_send_weather_for_city(args):
     args_separated = args.split(" ") # separating args
 
     if len(args_separated) < 2:
-        return message_prettify.error_prettify(commands_templates["weather"])  # user did not write the day
-
+        return message_prettify.error_prettify(commands_templates["weather"])  # user did not write the day (or the city)
     else:
-        given_city = args_separated[0] # $weather <city [0]> <day [1]>
-        day = int(args_separated[1]) # $weather <city [0]> <day [1]>
+        if len(args_separated) > 2: # city with more than 1 word
+            i = 0
+            given_city = ""
+            for arg in args_separated:
+                if (i < len(args_separated)-1):
+                    if given_city == "":
+                        given_city = arg
+                    else: 
+                        given_city += " " + arg
+                i=i+1
+            print(given_city)
+        else:
+            given_city = args_separated[0] # $weather <city [0]> <day [1]>
+        day = int(args_separated[-1]) # $weather <city [0]> <day [1]>
 
         try:
             city_code = data_grabbing.get_city_code(given_city) # get city code (we only have city name)
